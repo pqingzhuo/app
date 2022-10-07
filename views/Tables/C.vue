@@ -1,7 +1,7 @@
 <template>
     <div>
         操作内容
-        <el-select v-model="actionTarget" multiple placeholder="请选择">
+        <el-select v-model="actionTarget" @change="update" multiple placeholder="请选择">
             <el-option
             v-for="item in options"
             :value="item.value"
@@ -11,18 +11,21 @@
         </el-select>
         <div>
         C#=<el-input
+        @change="Cinput"
         placeholder="请输入内容"
         v-model="C_"
         clearable>
         </el-input></div>
         <div>
         CN=<el-input
+        @change="CNinput"
         placeholder="请输入内容"
         v-model="CN"
         clearable>
         </el-input></div>
         <div>
         PC#=<el-input
+        @change="PCinput"
         placeholder="请输入内容"
         v-model="PC_"
         clearable>
@@ -30,6 +33,8 @@
     </div>
 </template>
 <script>
+    let Target
+    let WHERE={}
     export default{
         name: 'C',
         data() {
@@ -57,11 +62,28 @@
                     label: 'COUNT(PC#)'
                 }],
                 C_: '',
-                CN_: '',
+                CN: '',
                 PC_: '',
-                actionTarget: [],
-                disabled: false
+                actionTarget: []
+            }
+        },
+        methods:{
+            update(actionTarget) {
+                Target = actionTarget
+            },
+            Cinput(C_) {
+                WHERE.C_=C_
+            },
+            CNinput(CN) {
+                WHERE.CN=CN
+            },
+            PCinput(PC_) {
+                WHERE.PC_=PC_
             }
         }
+    }
+    export {
+        Target,
+        WHERE
     }
 </script>

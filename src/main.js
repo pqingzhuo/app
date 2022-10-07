@@ -14,6 +14,9 @@ Vue.use(Option);
 Vue.use(Radio);
 Vue.use(RadioGroup);
 
+import axios from 'axios'
+Vue.prototype.$axios=axios
+
 new Vue({
   router,
   el: '#app',

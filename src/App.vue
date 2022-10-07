@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <el-radio-group @change="chooseTable" v-model="radio">
+      <el-radio-group @change="chooseTable" v-model="table">
         <el-radio 
           v-for="item in optionOfTable"
           :label="item.label"
@@ -21,11 +21,14 @@
     <div>
       <router-view></router-view>
     </div>
-    <el-button @click="change()" type="primary">确认按钮</el-button>
+    <el-button @click="submit()" type="primary">确认按钮</el-button>
   </div>
 </template>
 
 <script>
+import {Target as CTarget,WHERE as CWhere} from '../views/Tables/C.vue'
+import {Target as STarget,WHERE as SWhere} from '../views/Tables/S.vue'
+import {Target as SCTarget,WHERE as SCWhere} from '../views/Tables/SC.vue'
 
 export default {
   name: "App",
@@ -55,12 +58,34 @@ export default {
         label: '修改'
       }],
       action:'',
-      radio: ''
+      table: '',
+      actionTarget:[],
+      where:''
     }
   },
   methods: {
-    change() {
-      this.$router.push('/user')
+    submit() {
+      const self = this;
+      if(this.table=='学生表S') {
+        this.actionTarget = STarget
+        this.where = SWhere
+      }
+      else if(this.table=='课程表C') {
+        this.actionTarget = CTarget
+        this.where = CWhere
+      }
+      else if(this.table=='学生选课表SC') {
+        this.actionTarget = SCTarget
+        this.where = SCWhere
+      }
+      console.log(this.actionTarget)
+      console.log(this.where)
+      self.$axios.post('/action/', {
+        Table:this.table,
+        Action:this.action,
+        actionTarget:this.actionTarget,
+        Where:this.where
+      })
     },
     chooseTable(name) {
       console.log(name)
