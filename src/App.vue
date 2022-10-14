@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import {Target as CTarget,WHERE as CWhere} from '../views/Tables/C.vue'
-import {Target as STarget,WHERE as SWhere} from '../views/Tables/S.vue'
+import {Target as CTarget,WHERE as CWhere} from '../views/Tables/myC.vue'
+import {Target as STarget,WHERE as SWhere} from '../views/Tables/myS.vue'
 import {Target as SCTarget,WHERE as SCWhere} from '../views/Tables/SC.vue'
 
 export default {
@@ -90,10 +90,10 @@ export default {
     chooseTable(name) {
       console.log(name)
       if(name=='学生表S') {
-        this.$router.push('/S')
+        this.$router.push('/myS')
       }
       else if(name=='课程表C') {
-        this.$router.push('/C')
+        this.$router.push('/myC')
       }
       else if(name=='学生选课表SC') {
         this.$router.push('/SC')

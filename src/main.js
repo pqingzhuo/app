@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import {Button,Input,Container,Main,Header,Aside,Select,Option,Radio,RadioGroup, Rate} from 'element-ui';
+import {Button,Input,Container,Main,Header,Aside,Select,Option,Radio,RadioGroup} from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue';
 import router from '../router'

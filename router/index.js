@@ -5,14 +5,14 @@ Vue.use(VueRouter)
 
 const routes = [
     {
-        path:'/S',
-        name:'S',
-        component:() => import('../views/Tables/S.vue'),
+        path:'/myS',
+        name:'myS',
+        component:() => import('../views/Tables/myS.vue'),
     },
     {
-        path:'/C',
-        name:'C',
-        component:() => import('../views/Tables/C.vue')
+        path:'/myC',
+        name:'myC',
+        component:() => import('../views/Tables/myC.vue')
     },
     {
         path:'/SC',
@@ -21,7 +21,7 @@ const routes = [
     }
 ]
 const router = new VueRouter({
-    mode: 'history',
+    mode: 'hash',
     routes
 })
 
