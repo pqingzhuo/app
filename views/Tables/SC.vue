@@ -1,6 +1,14 @@
 <template>
     <div>
-        操作内容
+        <el-select v-model="action" @change="chooseAction" placeholder="操作">
+            <el-option
+                v-for="item in optionOfAction"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+        </el-select>
+        <div>操作内容</div>
         <el-select v-model="actionTarget" @change="update" multiple placeholder="请选择">
             <el-option
             v-for="item in options"
@@ -9,6 +17,7 @@
             :key="item.value">
             </el-option>
         </el-select>
+        <div>操作条件</div>
         <div>
         S#=<el-input
         @change="Sinput"
@@ -31,52 +40,88 @@
         clearable>
         </el-input>
         </div>
+        <div><el-tag v-if="action=='UPDATE'">修改值</el-tag></div>
+        <div>
+        <el-tag v-if="action=='UPDATE'">S#=</el-tag> 
+        <el-input
+        @change="XSinput"
+        placeholder="请输入内容"
+        v-model="XS_"
+        clearable
+        v-if="action=='UPDATE'">
+        </el-input></div>
+        <div>
+        <el-tag v-if="action=='UPDATE'">C#=</el-tag> 
+        <el-input
+        @change="XCinput"
+        placeholder="请输入内容"
+        v-model="XC_"
+        clearable
+        v-if="action=='UPDATE'">
+        </el-input></div>
+        <div>
+        <el-tag v-if="action=='UPDATE'">G=</el-tag> 
+        <el-input
+        @change="XGinput"
+        placeholder="请输入内容"
+        v-model="XG"
+        clearable
+        v-if="action=='UPDATE'">
+        </el-input>
+        </div>
     </div>
 </template>
 <script>
     let Target
     let WHERE={}
+    let UP={}
+    let Action
     export default{
         name: 'SC',
         data() {
             return {
+                optionOfAction: [{
+                    value: 'SELECT',
+                    label: '查询'
+                }, {
+                    value: 'DELETE',
+                    label: '删除'
+                }, {
+                    value: 'INSERT',
+                    label: '增加'
+                }, {
+                    value: 'UPDATE',
+                    label: '修改'
+                }],
                 options: [{
                     value: '*',
                     label: '*'
                 },{
-                    value: 'S#',
+                    value: 'S_',
                     label: 'S#'
-                }, {
-                    value: 'COUNT(S#)',
-                    label: 'COUNT(S#)'
-                }, {
-                    value: 'C#',
+                },{
+                    value: 'C_',
                     label: 'C#'
-                }, {
-                    value: 'COUNT(C#)',
-                    label: 'COUNT(C#)'
-                }, {
+                },{
                     value: 'G',
                     label: 'G'
-                }, {
-                    value: 'COUNT(G)',
-                    label: 'COUNT(G)'
-                }, {
-                    value: 'SUM(G)',
-                    label: 'SUM(G)'
-                }, {
-                    value: 'AVG(G)',
-                    label: 'AVG(G)'
                 }],
                 S_: '',
                 C_: '',
                 G: '',
-                actionTarget: []
+                XS_: '',
+                XC_: '',
+                XG: '',
+                actionTarget: [],
+                action: ''
             }
         },
         methods:{
             update(actionTarget) {
                 Target = actionTarget
+            },
+            chooseAction(action) {
+                Action = action 
             },
             Cinput(C_) {
                 WHERE.C_=C_
@@ -86,11 +131,22 @@
             },
             Ginput(G) {
                 WHERE.G=G
+            },
+            XCinput(C_) {
+                UP.C_=C_
+            },
+            XSinput(S_) {
+                UP.S_=S_
+            },
+            XGinput(G) {
+                UP.G=G
             }
         }
     }
     export {
         Target,
-        WHERE
+        WHERE,
+        UP,
+        Action
     }
 </script>

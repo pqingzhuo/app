@@ -9,15 +9,72 @@
           :key="item.key">
         </el-radio>
       </el-radio-group>
+      <el-table
+      :data="STable"
+      style="width: 100%"
+      v-if="table=='学生表S'">
+        <el-table-column
+          prop="S_"
+          label="S#"
+          width="150">
+        </el-table-column>
+        <el-table-column
+          prop="SN"
+          label="SN"
+          width="150">
+        </el-table-column>
+        <el-table-column
+          prop="SA"
+          label="SA"
+          width="150">
+        </el-table-column>
+        <el-table-column
+          prop="SD"
+          label="SD"
+          width="150">
+        </el-table-column>
+      </el-table>
+      <el-table
+      :data="CTable"
+      style="width: 100%"
+      v-if="table=='课程表C'">
+        <el-table-column
+          prop="C_"
+          label="C#"
+          width="150">
+        </el-table-column>
+        <el-table-column
+          prop="CN"
+          label="CN"
+          width="150">
+        </el-table-column>
+        <el-table-column
+          prop="PC#"
+          label="PC#"
+          width="150">
+        </el-table-column>
+      </el-table>
+      <el-table
+      :data="SCTable"
+      style="width: 100%"
+      v-if="table=='学生选课表SC'">
+        <el-table-column
+          prop="S_"
+          label="S#"
+          width="150">
+        </el-table-column>
+        <el-table-column
+          prop="C_"
+          label="C#"
+          width="150">
+        </el-table-column>
+        <el-table-column
+          prop="G"
+          label="G"
+          width="150">
+        </el-table-column>
+      </el-table>
     </div>
-    <el-select v-model="action" placeholder="操作">
-      <el-option
-      v-for="item in optionOfAction"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-      </el-option>
-    </el-select>
     <div>
       <router-view></router-view>
     </div>
@@ -26,14 +83,17 @@
 </template>
 
 <script>
-import {Target as CTarget,WHERE as CWhere} from '../views/Tables/myC.vue'
-import {Target as STarget,WHERE as SWhere} from '../views/Tables/myS.vue'
-import {Target as SCTarget,WHERE as SCWhere} from '../views/Tables/SC.vue'
-
+import {Target as CTarget,WHERE as CWhere,UP as CUp,Action as CAction} from '../views/Tables/myC.vue'
+import {Target as STarget,WHERE as SWhere,UP as SUp,Action as SAction} from '../views/Tables/myS.vue'
+import {Target as SCTarget,WHERE as SCWhere,UP as SCUp,Action as SCAction} from '../views/Tables/SC.vue'
+let isUpdate
 export default {
   name: "App",
   data() {
     return {
+      STable: [],
+      CTable: [],
+      SCTable: [],
       optionOfTable: [{
         key: 'S',
         label: '学生表S'
@@ -44,23 +104,11 @@ export default {
         key: 'SC',
         label: '学生选课表SC'
       }],
-      optionOfAction: [{
-        value: 'SELECT',
-        label: '查询'
-      }, {
-        value: 'DELETE',
-        label: '删除'
-      }, {
-        value: 'INSERT',
-        label: '增加'
-      }, {
-        value: 'UPDATE',
-        label: '修改'
-      }],
       action:'',
       table: '',
       actionTarget:[],
-      where:''
+      where:'',
+      updata:''
     }
   },
   methods: {
@@ -69,14 +117,20 @@ export default {
       if(this.table=='学生表S') {
         this.actionTarget = STarget
         this.where = SWhere
+        this.action = SAction
+        this.updata = SUp
       }
       else if(this.table=='课程表C') {
         this.actionTarget = CTarget
         this.where = CWhere
+        this.action = CAction
+        this.updata = CUp
       }
       else if(this.table=='学生选课表SC') {
         this.actionTarget = SCTarget
         this.where = SCWhere
+        this.action = SCAction
+        this.updata = SCUp
       }
       console.log(this.actionTarget)
       console.log(this.where)
@@ -84,7 +138,18 @@ export default {
         Table:this.table,
         Action:this.action,
         actionTarget:this.actionTarget,
-        Where:this.where
+        Where:this.where,
+        Update:this.updata
+      }).then(res => {
+        if(this.table=='学生表S') {
+          this.STable=res.data
+        }
+        else if(this.table=='课程表C') {
+          this.CTable=res.data
+        }
+        else if(this.table=='学生选课表SC') {
+          this.SCTable=res.data
+        }
       })
     },
     chooseTable(name) {
@@ -100,6 +165,9 @@ export default {
       }
     }
   }
+}
+export{
+  isUpdate
 }
 </script>
 
